@@ -7,6 +7,7 @@ import com.revature.bank.bo.EmployeeBo;
 import com.revature.bank.dao.EmployeeDao;
 import com.revature.bank.daoimpl.EmployeeDaoImpl;
 import com.revature.bank.to.Account;
+import com.revature.bank.to.Employee;
 import com.revature.bank.to.TransHistory;
 import com.revature.exception.BusinessException;
 
@@ -51,6 +52,13 @@ public class EmployeeBoImpl implements EmployeeBo {
 			dao = new EmployeeDaoImpl();
 		}
 		return dao;
+	}
+
+	@Override
+	public Employee getEmployeeInfo(int id) throws BusinessException {
+		Employee emp = null;
+		emp =  getDao().getEmployeeInfo(id);
+		return emp;
 	}
 
 }

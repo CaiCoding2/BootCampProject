@@ -29,18 +29,17 @@ public class BankApp {
 	
 	public static void main(String[] args) { // view or presentation layer
 		Scanner scanner = new Scanner(System.in);
-
-		log.info(
-			  "\n******            ***           ****        **    **    **        *^**^*   " + 
-			  "\n**   ***         ** **          ** **       **    **   **       {**O**O**} " + 
-			  "\n**   ***        **   **         **   **     **    **  **        ****__**** " + 
-			  "\n*******        *********        **    **    **    *****          ********  " + 
-			  "\n********      ***********       **     **   **    *****           ******   " + 
-			  "\n**    ***     **       **       **      **  **    **  **        ********** " + 
-			  "\n**    ***    **         **      **       ** **    **   **         ******   " + 
-			  "\n********    **           **     **        ****    **    **        **  **   " );
+		//Bank TITLE
+		log.info("******            ***           ****        **    **    **        *^**^*   ");
+		log.info("**   ***         ** **          ** **       **    **   **       {**O**O**} ");
+		log.info("**   ***        **   **         **   **     **    **  **        ****__**** ");
+		log.info("*******        *********        **    **    **    *****          ********  ");
+		log.info("********      ***********       **     **   **    *****           ******   ");
+		log.info("**    ***     **       **       **      **  **    **  **        ********** ");
+		log.info("**    ***    **         **      **       ** **    **   **         ******   "); 
+		log.info("********    **           **     **        ****    **    **        **  **   ");
 		log.info("___________________________________________________________\n");
-		log.info("                   Welcome to the Robot Bank");
+		log.info("                   WELCOME TO ROBOT BANK");
 		log.info("___________________________________________________________\n");
 		
 		int choice = 0;
@@ -61,11 +60,10 @@ public class BankApp {
 			
 			switch (choice) {
 			case 1:
-				//////////////////////////////////////////////////////////////////////////////////////////////////////////
-				//Customer Page 
+				/////////////////////////////////////// Customer Page ///////////////////////////////////////////////////////////////////
 				User userInfo = null;
 				log.info("___________________________________________________________\n");
-				log.info("                        Login Page");
+				log.info("                        LOGIN PAGE");
 				log.info("___________________________________________________________\n");
 				String username, pass;
 				log.info("Enter Username:  ");
@@ -78,7 +76,7 @@ public class BankApp {
 					log.error(e.getMessage());
 				}
 				if(userInfo!=null) {// user has been login
-					System.out.println("user has been login ");
+					System.out.println("\nUser has login. ");
 					Customer cust = new Customer();
 					Account account = new Account();
 					if(userInfo.getRole().equals("c") ) {
@@ -87,10 +85,11 @@ public class BankApp {
 						}catch(BusinessException e) {
 							log.error(e.getMessage());
 						}
+						///////////////////////////////////////////// user login /////////////////////////////////////////////////////////////
 						log.info("___________________________________________________________\n");
-						log.info("Welcome " + cust.getLname().toUpperCase());
+						log.info("                      CUSTOMER PAGE");
 						log.info("___________________________________________________________\n");
-						
+						log.info("WELCOME " + cust.getLname().toUpperCase() +"\n");
 						int custOption = 0;
 						do {
 							log.info("Select option below: ");
@@ -103,7 +102,7 @@ public class BankApp {
 								custOption = 0;
 							}
 							switch(custOption) {
-							/////////////////////////////////////////////////////////////////////////////////////////////////////////
+							////////////////////////////////////////// apply new account ///////////////////////////////////////////////////////////////
 							case 1:
 									account = new Account();
 									account.setCustInfo(cust.getCID());
@@ -165,6 +164,7 @@ public class BankApp {
 									}
 								break;
 								//////////////////////////////////////////////////////////////////////////////////////////////////////////
+								//view account
 							case 2:
 								account = new Account();
 								boolean syntax = false;
@@ -174,6 +174,7 @@ public class BankApp {
 										List<Account> accList= abo.getAllAccount(cust.getCID());
 										if(accList.size() == 0) {
 											System.out.println("No account record. Please apply new account");
+											log.info("\n-----------------------------------------------------------\n");
 											syntax= true;
 										}else {
 											found =true;
@@ -196,7 +197,8 @@ public class BankApp {
 													throw new BusinessException("Invalid Selection..select between 1-"+accList.size());
 												}else {
 													account = accList.get(select);
-													log.info("You had select your "+ account.getaType().getTypes()+" account with account#'s: " + account.getAccountNumber());
+													log.info("You had select your "+ account.getaType().getTypes()+" account with account#'s: " 
+													+ account.getAccountNumber());
 													syntax = true;
 												}
 											}catch (NumberFormatException e) {
@@ -220,24 +222,26 @@ public class BankApp {
 											log.info("4) Transaction Log");
 											log.info("5) Back");
 											
+											
 											try {
 												action = Integer.parseInt(scanner.next());
 											} catch (NumberFormatException e) {
 												action = 0;
 											}
 											switch(action) {
+											//////////////////////////////// Depositt ////////////////////////////////
 											case 1:
 												log.info("Enter the amount you want to deposit:  ");
-												success = false;
 												try {
 													
 													double amount = scanner.nextDouble();
 													try {
-														int i  = abo.deposit(account.getAccountNumber(),amount);
+														  boolean check = abo.deposit(account.getAccountNumber(),amount);
 														
-														if(i == 1) {
+														if(!check) {
 															log.info("\n-----------------------------------------------------------\n");
-															log.info("The system has received the deposit  $" + amount + " into account#'s " + account.getAccountNumber());
+															log.info("The system has received the deposit  $" + amount + " into account#'s "
+															+ account.getAccountNumber());
 															log.info("\n-----------------------------------------------------------\n");
 														}
 													}catch(BusinessException e) {
@@ -246,19 +250,19 @@ public class BankApp {
 													
 												}catch(InputMismatchException e) {
 													log.info("Invalid input");
-									
 												}
-												
 												break;
+				                              //////////////////////////////// Withdrawal ////////////////////////////////
 											case 2:
 												log.info("Enter the amount you want to withdrawal: ");
 												try {
 													double amount = scanner.nextDouble();
 													try {
-														int i = abo.withdrawal(account.getAccountNumber(), amount);
-														if(i == 1) {
+														boolean check = abo.withdrawal(account.getAccountNumber(), amount);
+														if(!check) {
 															log.info("\n-----------------------------------------------------------\n");
-															log.info("The system has withdrawal  $" + amount + " from account#'s " + account.getAccountNumber());
+															log.info("The system has withdrawal  $" + amount + " from account#'s " 
+															+ account.getAccountNumber());
 															log.info("\n-----------------------------------------------------------\n");
 														}
 													}catch(BusinessException e) {
@@ -268,16 +272,16 @@ public class BankApp {
 													log.info("Invalid input format");
 												}
 												break;
+				                             //////////////////////////////// Transfer ////////////////////////////////
 											case 3:
 												log.info("Enter the amount you want to transfer: ");
-						
 												try {
 													double amount = scanner.nextDouble();
 													try {
 														log.info("Enter recipient account number in format of BR follow by 6 acount digit");
 														String target = scanner.next();
-														int i = abo.transfer(account.getAccountNumber(), target, amount);
-														if(i == 1) {
+														boolean check = abo.transfer(account.getAccountNumber(), target, amount);
+														if(!check) {
 															log.info("\n-----------------------------------------------------------\n");
 															log.info("The system has transfer money $"+amount+" to the recipient account");
 															log.info("\n-----------------------------------------------------------\n");
@@ -288,8 +292,8 @@ public class BankApp {
 												}catch(InputMismatchException e) {
 													log.info("Invalid input format");
 												}
-												
 												break;
+				                            //////////////////////////////// Transaction Log ////////////////////////////////
 											case 4:
 												log.info("Transaction Log");
 												try {
@@ -299,7 +303,7 @@ public class BankApp {
 													for(TransHistory t:tList) {
 														log.info(++i+") "+ t.toString());
 													}
-													log.info("-----------------------------------------------------------\n");
+													log.info("\n-----------------------------------------------------------\n");
 												}catch(BusinessException e) {
 													log.error(e.getMessage());
 												}
@@ -323,9 +327,9 @@ public class BankApp {
 										log.info("\n-----------------------------------------------------------\n");
 									}
 								}
-								
 								break;
 							case 3:
+								log.info("Logging off \n");
 								break;
 							default:
 								log.info("Invalid Option......select 1-3");
@@ -334,21 +338,30 @@ public class BankApp {
 						}while (custOption !=3 );
 						
 
-////////////			//////////////////////////////////////////////////////////////////////////////////////////////
+                         //////////////////////////////////////////////////////////////////////////////////////////////////////////
 						// Employee Option
 					}else if(userInfo.getRole().equals("e")){
 						log.info("___________________________________________________________\n");
-						log.info("                       Employee Page");
+						log.info("                       EMPLOYEE PAGE");
 						log.info("___________________________________________________________\n");
 						int selection = 0;
 						EmployeeBo ebo = new EmployeeBoImpl();
 						Account acc = new Account();
 						Customer customer = new Customer();
+						Employee emp = new Employee();
+						try {
+							emp =ebo.getEmployeeInfo(userInfo.getUserId()); 
+							log.info("Welcome "+ emp.getFname() +" " +emp.getLname() + "\n");
+						}catch(BusinessException e ) {
+							log.error(e.getMessage());
+						}
+						
 						do {
 							log.info("Select option");
 							log.info("1. View Pending Account");
 							log.info("2. View Account");
-							log.info("3. Back");
+							log.info("3. Register New Customer");
+							log.info("4. Back");
 							
 							try {
 								selection = Integer.parseInt(scanner.next());
@@ -357,13 +370,14 @@ public class BankApp {
 							}
 							
 							switch(selection) {
+                             /////////////////////////////////////  View Pending Account /////////////////////////////////////////
 							case 1 :
 								acc = new Account();
 								boolean syntax= false;
 								boolean noAcountFound = false;
 								do {//get all pending list  and select on account
 									log.info("\n-----------------------------------------------------------");
-									log.info("                       Pending Account");
+									log.info("                      Pending Account");
 									log.info("-----------------------------------------------------------\n");
 									try {
 										List<Account> pendingAcc = ebo.getAllPendingAccount();
@@ -377,7 +391,6 @@ public class BankApp {
 									
 												log.info(++i+ ") "+t.getAccountNumber()+"      " + t.getBalance()+"       "  + t.getaType().getTypes());
 											}
-											
 											try {
 												int select = Integer.parseInt(scanner.next());
 												log.info("\n-----------------------------------------------------------\n");
@@ -406,9 +419,7 @@ public class BankApp {
 											}catch(NumberFormatException e) {
 												log.error("Invalid format.......select between 1-" + pendingAcc.size());
 											}
-										}
-										
-										
+										}						
 									}catch (BusinessException e) {
 										log.error(e.getMessage());
 										syntax = true;
@@ -448,13 +459,11 @@ public class BankApp {
 										
 									}while (syntax != true);
 								}
-								
-								
-								
 								break;
+								 /////////////////////////////////////  Search Account  /////////////////////////////////////////
 							case 2:
 								log.info("\n-----------------------------------------------------------");
-								log.info("                         View Account");
+								log.info("                      Search Account");
 								log.info("-----------------------------------------------------------\n");
 								acc = new Account();
 								do {
@@ -545,8 +554,7 @@ public class BankApp {
 												default:
 													log.info("Invalid option...select again.");
 												}
-											}while(getTrans != true);
-											
+											}while(getTrans != true);	
 										}
 										
 										break;
@@ -563,20 +571,172 @@ public class BankApp {
 								} while(success != true);
 								break;
 							case 3:
-								log.info("Logging off ");
+								log.info("___________________________________________________________\n");
+								log.info("                  REGISTER NEW CUSTOMER");
+								log.info("___________________________________________________________\n");
+								Account byEmp = new Account();
+								Customer c = new Customer();
+								User u = new User();
+								boolean type = false;
+								boolean nSelect = false;;
+								do {// get type
+									try {//get all account Type List
+										log.info("Apply which type of account? ");
+										List<AccountType> accTypeList = atbo.getAccountTypeList(); 
+										int i = 0;
+										for(AccountType t:accTypeList) {
+											log.info(++i + ") " +t.getTypes());
+										}
+										log.info("3) Back");
+										try {
+												int select = Integer.parseInt(scanner.next());
+												if(select == 3) {
+													nSelect = true;
+													type = true;
+												} 
+												select--;
+												if(select < 0 || select >= accTypeList.size()) {
+													throw new BusinessException("Invalid Selection.....select between 1-3");
+												}else {
+													byEmp.setaType(accTypeList.get(select));
+													boolean getBalance = false;
+													do {
+														log.info("Start Balance: ");
+														try {
+															double amount = scanner.nextDouble();
+															if(amount< 0) {
+																log.error("Invalid starting balance");
+															}else {
+																String a = Double.toString(amount);
+																if(a.matches("^\\d*(\\.\\d{1,2})?$")) {
+																	byEmp.setBalance(amount);
+																	byEmp.setStatusId(3);
+																	getBalance = true;
+																	type = true;
+																}else {
+																	throw new BusinessException("Invalid format #.##");
+																}
+															}
+															
+														}catch (NumberFormatException e) {
+															log.error("Number only");
+														}
+													}while(getBalance != true);
+												}
+												
+										}catch (NumberFormatException e) {
+											log.error("Number only");
+										}
+									}catch (BusinessException e) {
+										log.error(e.getMessage());
+									}
+								}while (type != true);
+								if(nSelect) {}
+								else {/////////////////////////////////////////////////////////////////////////////////////
+									success = false;
+									boolean finish = false;
+									do {
+										String f,l,d,g;
+										do{ success = false;
+											log.info("Enter First Name");
+										    f = scanner.next();
+										    if(f.matches("^[a-zA-Z]*$")){success = true;}
+										    else {log.error("Invalid input......first name should be alphabet only");}
+										}while(success !=true);
+										
+										do{ success = false;
+											log.info("Enter Last Name");
+									    	l = scanner.next();
+									    	if(l.matches("^[a-zA-Z]*$")){success = true;}
+									    	else{log.error("Invalid input......last name should be alphabet only");}
+										}while(success !=true);
+										
+										do {success = false;
+											log.info("Enter your gender{m/f/o}");
+											g = scanner.next();
+											if(g.matches("^[a-zA-Z]*$") && g.equalsIgnoreCase("m")|| g.equalsIgnoreCase("f")||(g.equalsIgnoreCase("o"))) {
+												success = true;
+											}else {log.error("Invalid input......gender should be select from {m/f/o}");}
+										}while(success !=true);
+										
+										do { success = false;
+										log.info("Enter DOB(dd.MM.yyyy) ");
+										d= scanner.next();
+										if(d.matches("[0-9]{2}\\.[0-9]{2}\\.[0-9]{4}")) {
+											
+											try {
+												SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+												sdf.setLenient(false);
+												c.setDob(sdf.parse(d));
+												success = true;
+											}catch (ParseException e) {
+												log.error("Date format must be dd.MM.yyyy");
+											}
+										}
+										else {log.error("Invalid input......DOB should be in format (dd.MM.yyyy)");}
+										} while(success != true);
+										c.setFname(f);
+										c.setLname(l);
+										c.setGender(g);
+										
+										boolean getUser= false;
+										do {
+											log.info("Enter New Username:  "); //get username 
+											u.setUsername(scanner.next());
+											log.info("Enter New Password:  ");
+											u.setPassword(scanner.next()); 
+											try {
+												 getUser = bo.createUser(u);
+											} catch(BusinessException e) {
+												log.error(e.getMessage());
+											}
+										}while(getUser != true);
+										try {
+											u = bo.authenticateUser(u.getUsername(), u.getPassword());
+										} catch (BusinessException e) {
+											log.error(e.getMessage());
+										}
+										c.setUserId(u.getUserId());
+										try {
+											c = cbo.addCustInfo(c);
+										}catch(BusinessException e) {
+											log.error(e.getMessage());
+										}
+										byEmp.setCustInfo(c.getCID());
+										try {
+											byEmp = abo.newAccount(byEmp);
+											if(byEmp.getAccountNumber() != null) {
+												log.info("\n-----------------------------------------------------------\n");
+												log.info("          Thanks you for applying robot bank account.");
+												log.info("                   You account is good to go.");
+												log.info("\n-----------------------------------------------------------\n");
+												finish = true;
+											}
+										}catch(BusinessException e) {
+											log.error(e.getMessage());
+										}
+									
+									}while (finish != true);
+
+								}
+								////////////////////////////////////////////////////////////////////////
+								
+								break;
+							case 4:
+								log.info("Logging off \n");
 								break;
 							default: 
-								log.info("Invalid Selection.....Selection between 1-3");
+								log.info("Invalid Selection.....Selection between 1-4");
 								break;
 							}
 						
-						}while (selection != 3);
+						}while (selection != 4);
 					}
 				}
 				break;
 			case 2: 
 				log.info("___________________________________________________________\n");
-				log.info("                        Register New User");
+				log.info("                     REGISTER NEW USER");
 				log.info("___________________________________________________________\n");
 				User users = new User(); //new user object 
 				Customer custInfo = new Customer(); // new customer object
@@ -632,18 +792,23 @@ public class BankApp {
 							do { success = false;
 							log.info("Enter DOB(dd.MM.yyyy) ");
 							d= scanner.next();
-							if(d.matches("[0-9]{2}\\.[0-9]{2}\\.[0-9]{4}")) {success = true;}
+							if(d.matches("[0-9]{2}\\.[0-9]{2}\\.[0-9]{4}")) {
+								try {
+									SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+									sdf.setLenient(false);
+									custInfo.setDob(sdf.parse(d));
+									success = true;
+								}catch (ParseException e) {
+									log.error("Date formate must be dd.MM.yyyy");
+								}
+								}
 							else {log.error("Invalid input......DOB should be in format (dd.MM.yyyy)");}
 							} while(success != true);
 							
 							custInfo.setFname(f);
 							custInfo.setLname(l);
 							custInfo.setGender(g);
-							try {
-								custInfo.setDob(new SimpleDateFormat("dd.MM.yyyy").parse(d));
-							}catch (ParseException e) {
-								log.error(e);
-							}
+							
 							
 							try {
 								custInfo = cbo.addCustInfo(custInfo);
@@ -660,6 +825,7 @@ public class BankApp {
 							success = false;
 							log.info("You had Successful fill the info ");
 							log.info("--------------------------------------------------");
+							log.info("Please fill the customer infomation.");
 							account.setCustInfo(custInfo.getCID()); // assign customer id to account 
 							boolean syntax = false;
 							do {
@@ -681,10 +847,12 @@ public class BankApp {
 											}else {
 												select--;
 												if(select < 0 || select >= accTypeList.size()) {
-													throw new BusinessException("Invalid Selection..select between 1-"+accTypeList.size());
+													throw new BusinessException("Invalid Selection.....select between 1-3");
 												}else {
 													account.setaType(accTypeList.get(select));
 													try {//creating account with info fill out 
+														account.setBalance(0);
+														account.setStatusId(1);
 														account = abo.newAccount(account);
 														if(account.getAccountNumber() != null) {
 															log.info("\n-----------------------------------------------------------\n");
@@ -707,17 +875,14 @@ public class BankApp {
 									log.error(e.getMessage());
 								}
 							}while (syntax != true);
-							
-							
-							
 						}while (success != true);
 					}
 				}
 				break;
 			case 3:
-				log.info("--------------------------------------------------");
-				log.info("Thank You for using the robot bank application");
-				log.info("--------------------------------------------------");
+				log.info("\n___________________________________________________________\n");
+				log.info("         THANK YOU FOR USING ROBOT BANK APPLICATION");
+				log.info("___________________________________________________________\n");
 				break;
 			default: 
 				log.error("------------------------------------------------------");

@@ -11,7 +11,6 @@ import com.revature.bank.to.User;
 import com.revature.exception.BusinessException;
 import com.revature.util.DBConnection;
 
-
 public class UserDaoImpl implements UserDao {
 	@Override
 	public boolean createUser(User user) throws BusinessException{
@@ -35,7 +34,6 @@ public class UserDaoImpl implements UserDao {
 	public User authenticateUser(String user, String password) throws BusinessException {
 		User users = null;
 		try(Connection connection = DBConnection.getConnection()){
-			
 			PreparedStatement pstm= connection.prepareStatement("select * from users where username=? and password =? ");
 			pstm.setString(1,user);
 			pstm.setString(2, password);
@@ -47,13 +45,11 @@ public class UserDaoImpl implements UserDao {
 				users.setPassword(set.getString(3));
 				users.setRole(set.getString(4));
 			} else {
-				throw new BusinessException("Username and Password does not match");
+				throw new BusinessException("Username and Password does not match.\n");
 			}
-			
 		}catch (ClassNotFoundException | SQLException e) {
 			throw new BusinessException("Interal Error...Contact support" + e);
 		}
 		return users;
 	}
-
 }

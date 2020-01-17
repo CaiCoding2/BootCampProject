@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"/>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link href="https://fonts.googleapis.com/css?family=Orbitron:600&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/social.css">
+	<link rel="stylesheet" href="css/main.css">
+	<link rel="icon" type=image/png href="image/logo.png">
+<title>Staff</title>
+</head>
+<body style="font-family: 'Orbitron', sans-serif;" onload="loading()">
+<!-- menu -->
+	<nav class="lime lighten-4">
+		<div class="nav-wrapper">
+			<img id="logo" alt="Logo" src="image/logo.png" width="60" height="60" style="position: absolute; left: 60px;top:2px">
+			<a class="brand-logo center" style="color:black;font-size:30px;"  >Robot</a>
+			<a href="#" data-target="mobile-nav" class="sidenav-trigger" style="color:black"><i class="material-icons">menu</i></a>
+			<ul class="right hide-on-med-and-down">
+				<li><a href="index.html"  style="color:black"><i class="material-icons">home</i></a></li>
+				<li><a href="login.html"  style="color:black;font-size:15px;">Login</a></li>
+				<li><a href="#"  style="color:black;font-size:15px;">ContactUs</a></li>
+			</ul>
+		</div>
+	</nav>
+	
+	<ul class="sidenav" id="mobile-nav">
+		<li><a href="index.html">Home</a></li>
+		<li><a href="login.html">Login</a></li>
+		<li><a href="#">ContactUs</a></li>
+	</ul>
+	 <!-- body -->
+		<div class = "main">
+			<div  style="margin-top:50px;margin-left:3px">
+				<div class="container">
+					<div class="left">
+						<br>
+						<h4 id=profile>name</h4><br>
+					</div>
+					<div class="right">
+						<br>
+						<form action="logoff" method="post">
+							<input type="submit" value = "Logout">
+						</form>
+					</div>
+				</div>
+				<div class="container" >
+				  <div class ="row card">
+				  	<div class="col s6">
+				  		<h3>Searching</h3>
+						<form action="staff" method="GET">
+							<input
+								type="text"
+								name="searchaccount"
+								id="searchaccount"
+								maxlength=8
+								onfocusout="valAcc()"
+								placeholder="Account Searching"/>
+							<span class="helper-text"></span>
+							<button type="submit" class="btn-small waves-effect green darken-2 left" style="width:30%;">Search</button>
+						</form>
+						<div id="detail"></div>
+				  	</div>
+				  	<div class="col s6 ">
+						<h3>Pending</h3>
+						<form action="staff" method="post">
+							<div id="pending"></div>
+							<button  value='approve' class="btn-small" style="width:25%;">Approve</button>
+							<button  value='reject'class="btn-small" style="width:25%;">Reject</button>	
+						</form>
+						<br>
+				  	</div>
+				  </div>		  			
+			</div>			
+			</div>
+		</div>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+	<script src="scripts/staff.js"></script>
+	<script src="scripts/searching.js"></script>
+	<script src="scripts/check.js"></script>
+</body>
+</html>

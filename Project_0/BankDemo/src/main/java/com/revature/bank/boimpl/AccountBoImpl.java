@@ -22,8 +22,8 @@ public class AccountBoImpl implements AccountBo {
 	@Override
 	public Account newAccount(Account acc) throws BusinessException {
 		try {
-			acc.setBalance(0); // 0 balance
-			acc.setStatusId(1); // default pending
+			//acc.setBalance(0); // 0 balance
+			//acc.setStatusId(1); // default pending
 			acc = getDao().newAccount(acc);
 		} catch (BusinessException e ) {
 			
@@ -32,7 +32,7 @@ public class AccountBoImpl implements AccountBo {
 	}
 
 	@Override
-	public int deposit(String account,double amount) throws BusinessException {
+	public boolean deposit(String account,double amount) throws BusinessException {
 		String dateString = dateformat.format(new Date());
 		try {//get data 
 			date = dateformat.parse(dateString);
@@ -40,19 +40,23 @@ public class AccountBoImpl implements AccountBo {
 			throw new BusinessException("System date format error");
 		}
 		//InputMismatchException
-	
+		
 		if(amount <= 0) {
 			throw new BusinessException("Invalid amount to depoist");
 		}
-		if(account.matches("BR[0-9]{6}")) {
-			return getDao().deposit(account,amount,date);
-		}else {
-			throw new BusinessException("account number is invalid");
+		String a = Double.toString(amount);
+		if(a.matches("^\\d*(\\.\\d{1,2})?$")) {
+			if(account.matches("BR[0-9]{6}")) {
+				return getDao().deposit(account,amount,date);
+			}else {
+				throw new BusinessException("account number is invalid");
+			}
 		}
+		else {throw new BusinessException("Invalid format.... (#.##)");}
 	}
 	
 	@Override
-	public int withdrawal(String account,double amount) throws BusinessException {
+	public boolean withdrawal(String account,double amount) throws BusinessException {
 		String dateString = dateformat.format(new Date());
 		try {//get data 
 			date = dateformat.parse(dateString);
@@ -63,15 +67,22 @@ public class AccountBoImpl implements AccountBo {
 		if(amount <= 0) {
 			throw new BusinessException("Invalid amount to withdrawal");	
 		}
-		if(account.matches("BR[0-9]{6}")) {
-			return getDao().withdrawal(account, amount,date);
-		}else {
-			throw new BusinessException("account number is invalid");
+		String a = Double.toString(amount);
+		if(a.matches("^\\d*(\\.\\d{1,2})?$")) {
+			if(account.matches("BR[0-9]{6}")) {
+				return getDao().withdrawal(account, amount,date);
+			}else {
+				throw new BusinessException("account number is invalid");
+			}
 		}
+		else {throw new BusinessException("Invalid format.... (#.##)");}
+		
+		
+		
 	}
 
 	@Override
-	public int transfer(String transferFrom, String transferTo, double amount) throws BusinessException {
+	public boolean transfer(String transferFrom, String transferTo, double amount) throws BusinessException {
 		String dateString = dateformat.format(new Date());
 		try {//get data 
 			date = dateformat.parse(dateString);
@@ -81,15 +92,22 @@ public class AccountBoImpl implements AccountBo {
 		if(amount <= 0) {
 			throw new BusinessException("Invalid amount to transfer");
 		}
-		if(transferFrom.matches("BR[0-9]{6}")){
-			if(transferTo.matches("BR[0-9]{6}")) {
-				return getDao().transfer(transferFrom, transferTo, amount,date);
+		String a = Double.toString(amount);
+		if(a.matches("^\\d*(\\.\\d{1,2})?$")) {
+			if(transferFrom.matches("BR[0-9]{6}")){
+				if(transferTo.matches("BR[0-9]{6}")) {
+					return getDao().transfer(transferFrom, transferTo, amount,date);
+				}else {
+					throw new BusinessException("recipient account number is invalid");
+				}
 			}else {
-				throw new BusinessException("recipient account number is invalid");
+				throw new BusinessException("account number is invalid");
 			}
 		}else {
-			throw new BusinessException("account number is invalid");
+			throw new BusinessException("Invalid format.... (#.##)");
 		}
+		
+		
 	}
 	
 	public AccountDao getDao() {

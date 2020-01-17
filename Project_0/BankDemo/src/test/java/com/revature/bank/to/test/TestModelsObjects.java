@@ -54,9 +54,11 @@ class TestModelsObjects {
 		employee.setEID("e2222");
 		employee.setFname("Barn");
 		employee.setLname("ing");
+		employee.setUserId(5);
 		assertEquals(employee.getEID(), "e2222");
 		assertEquals(employee.getFname(), "Barn");
 		assertEquals(employee.getLname(), "ing");
+		assertEquals(employee.getUserId(), 5);
 	}
 	@Test
 	public void testTransHistory() { //transHistory and transType

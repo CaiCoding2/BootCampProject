@@ -40,7 +40,7 @@ public class AccountDaoImpl implements AccountDao {
 	}
 
 	@Override
-	public int deposit(String account,double amount,Date date) throws BusinessException {
+	public boolean deposit(String account,double amount,Date date) throws BusinessException {
 		int i = 0;
 		double total = 0;
 		boolean found = false;
@@ -67,17 +67,17 @@ public class AccountDaoImpl implements AccountDao {
 					ps.setDouble(2, amount);
 					ps.setInt(3, 1);
 					ps.setDate(4, new java.sql.Date(date.getTime()));
-					ps.execute();
+					return ps.execute();
 				}
 			}
 		}catch(ClassNotFoundException | SQLException e) {
 			throw new BusinessException("Interal Error " + e);
 		}
-		return 1;
+		return false;
 	}
 
 	@Override
-	public int withdrawal(String account,double amount, Date date) throws BusinessException {
+	public boolean withdrawal(String account,double amount, Date date) throws BusinessException {
 		int i = 0;
 		double total = 0;
 		boolean found = false;
@@ -107,17 +107,17 @@ public class AccountDaoImpl implements AccountDao {
 					ps.setDouble(2, amount);
 					ps.setInt(3, 2);
 					ps.setDate(4, new java.sql.Date(date.getTime()));
-					ps.execute();
+					return ps.execute();
 				}
 			}
 		}catch(ClassNotFoundException | SQLException e) {
 			throw new BusinessException("Interal Error " + e);
 		}
-		return 1;
+		return false;
 	}
 
 	@Override
-	public int transfer(String transferFrom, String transferTo, double amount, Date date) throws BusinessException {
+	public boolean transfer(String transferFrom, String transferTo, double amount, Date date) throws BusinessException {
 		double total = 0;
 		int i = 0;
 		boolean success = false;
@@ -181,14 +181,14 @@ public class AccountDaoImpl implements AccountDao {
 					ps.setString(4, transferFrom);
 					ps.setString(5, transferTo);
 					ps.setDate(6, new java.sql.Date(date.getTime()));
-					ps.execute();
+					return ps.execute();
 	
 				}
 			}
 		}catch(ClassNotFoundException | SQLException e) {
 			throw new BusinessException("Interal Error " + e);
 		}
-		return 1;
+		return false;
 	}
 
 	@Override

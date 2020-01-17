@@ -10,6 +10,7 @@ import java.util.List;
 import com.revature.bank.dao.EmployeeDao;
 import com.revature.bank.to.Account;
 import com.revature.bank.to.AccountType;
+import com.revature.bank.to.Employee;
 import com.revature.bank.to.TransHistory;
 import com.revature.bank.to.TransType;
 import com.revature.exception.BusinessException;
@@ -118,6 +119,26 @@ public class EmployeeDaoImpl implements EmployeeDao {
 			throw new BusinessException("Interal Error " + e);
 		}
 		return transList;
+	}
+
+	@Override
+	public Employee getEmployeeInfo(int id) throws BusinessException {
+		Employee emp = new Employee();
+		try(Connection connection = DBConnection.getConnection()){
+			String sql = "select * from employee where userid = ?";
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setInt(1, id);
+			ResultSet set = ps.executeQuery();
+			while(set.next()) {
+				emp.setEID(set.getString("EID"));
+				emp.setFname(set.getString("fname"));
+				emp.setLname(set.getString("lname"));
+				emp.setUserId(id);
+			}
+		}catch(ClassNotFoundException | SQLException e) {
+			throw new BusinessException("Interal Error.....Contact support");
+		}
+		return emp;
 	}
 
 }

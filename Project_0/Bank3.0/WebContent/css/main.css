@@ -1,0 +1,16 @@
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+ .main {
+   flex: 1 0 auto;
+   }
+ 
+.background{
+	background: url(https://h2.gifposter.com/bingImages/BulgariaPerseids_EN-US11585904087_1920x1080.jpg);
+	background-repeat:no-repeat;
+	background-attachment: fixed;
+	background-size: cover;
+}
+

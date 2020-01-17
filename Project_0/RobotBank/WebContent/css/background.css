@@ -1,0 +1,19 @@
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+a{
+	style="color: black; 
+	font-weight:900;
+}
+
+.main {
+   flex: 1 0 auto;
+   }
+.background{
+	background: url(../image/future-30.jpg);
+	background-repeat:no-repeat;
+	background-attachment: fixed;
+	background-size: cover;
+}
